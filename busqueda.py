@@ -1,6 +1,7 @@
 from functools import reduce
 from re import split
 from operator import itemgetter
+from sys import argv
 
 
 def leer(ruta):
@@ -56,10 +57,14 @@ def busquedaGramas(archivoEntrada, tamañoGramas, umbralFrecuencia, archivoSalid
     guardarResultado(resultado, umbralFrecuencia, archivoSalida)
 
 
-def main():
-    busquedaGramas('Ejemplo.txt', 2, 5, 'Resultado.txt')
+def main(argumentos):
+    entrada = argumentos[0]
+    tamañoGrama = int(argumentos[1])
+    umbralFrecuencia = int(argumentos[2])
+    salida = argumentos[3]
+    busquedaGramas(entrada, tamañoGrama, umbralFrecuencia, salida)
 
 
 if __name__ == '__main__':
-    main()
+    main(argv[1:])
 
