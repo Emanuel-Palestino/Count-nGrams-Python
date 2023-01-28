@@ -1,5 +1,6 @@
 from functools import reduce
-import re
+from re import split
+from operator import itemgetter
 
 
 def leer(ruta):
@@ -9,7 +10,7 @@ def leer(ruta):
 
 
 def dividir(linea):
-    palabras = re.split('([0-9]*=)|\n', linea)[2]
+    palabras = split('([0-9]*=)|\n', linea)[2]
     return palabras.split(',')
 
 
@@ -33,8 +34,8 @@ def contarNGramas(n):
 
 
 def acumularTotal(resultado, objGramas):
-    for clave in objGramas.keys():
-        resultado[clave] = resultado.get(clave, 0) + objGramas[clave]
+    for clave, valor in objGramas.items():
+        resultado[clave] = resultado.get(clave, 0) + valor
     return resultado
 
 
@@ -44,8 +45,8 @@ def contarFrecuenciaGramas(lineas, tamañoGramas):
 
 def guardarResultado(resultado, umbralFrecuencia, archivo):
     with open(archivo, 'w') as salida:
-        descendente = sorted(resultado.keys(), key=lambda x: resultado[x], reverse=True)
-        impresion = (f'[{resultado[x]}]\t{x}\n' for x in descendente if resultado[x] >= umbralFrecuencia)
+        descendente = sorted(resultado.items(), key=itemgetter(1), reverse=True)
+        impresion = (f'[{valor}]\t{clave}\n' for clave, valor in descendente if valor >= umbralFrecuencia)
         salida.writelines(impresion)
 
 
