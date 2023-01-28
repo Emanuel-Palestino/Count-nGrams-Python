@@ -33,7 +33,7 @@ def contarNGramas(n):
 
 
 def acumularTotal(resultado, objGramas):
-    for clave in objGramas:
+    for clave in objGramas.keys():
         resultado[clave] = resultado.get(clave, 0) + objGramas[clave]
     return resultado
 
@@ -44,9 +44,10 @@ def contarFrecuenciaGramas(lineas, tamañoGramas):
 
 def guardarResultado(resultado, umbralFrecuencia, archivo):
     with open(archivo, 'w') as salida:
-        descendente = sorted(resultado, key=lambda x: resultado[x], reverse=True)
+        descendente = sorted(resultado.keys(), key=lambda x: resultado[x], reverse=True)
         impresion = (f'[{resultado[x]}]\t{x}\n' for x in descendente if resultado[x] >= umbralFrecuencia)
         salida.writelines(impresion)
+
 
 def busquedaGramas(archivoEntrada, tamañoGramas, umbralFrecuencia, archivoSalida):
     archivo = leer(archivoEntrada)
