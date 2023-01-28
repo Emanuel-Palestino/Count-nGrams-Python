@@ -42,19 +42,20 @@ def contarFrecuenciaGramas(lineas, tamañoGramas):
     return reduce(acumularTotal, map(contarNGramas(tamañoGramas), lineas), {})
 
 
-def imprimirResultado(resultado, umbralFrecuencia):
-    for clave in resultado:
-        if resultado[clave] >= umbralFrecuencia:
-            print(f'[{resultado[clave]}] {clave}')
+def guardarResultado(resultado, umbralFrecuencia, archivo):
+    with open(archivo, 'w') as salida:
+        descendente = sorted(resultado, key=lambda x: resultado[x], reverse=True)
+        impresion = (f'[{resultado[x]}]\t{x}\n' for x in descendente if resultado[x] >= umbralFrecuencia)
+        salida.writelines(impresion)
 
 def busquedaGramas(archivoEntrada, tamañoGramas, umbralFrecuencia, archivoSalida):
     archivo = leer(archivoEntrada)
     resultado = contarFrecuenciaGramas(archivo, tamañoGramas)
-    imprimirResultado(resultado, umbralFrecuencia)
+    guardarResultado(resultado, umbralFrecuencia, archivoSalida)
 
 
 def main():
-    busquedaGramas('Ejemplo.txt', 2, 5, '')
+    busquedaGramas('Ejemplo.txt', 2, 5, 'Resultado.txt')
 
 
 if __name__ == '__main__':
