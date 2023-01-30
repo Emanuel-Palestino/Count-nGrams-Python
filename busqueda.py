@@ -44,9 +44,14 @@ def contarFrecuenciaGramas(lineas, tamañoGramas):
     return reduce(acumularTotal, map(contarNGramas(tamañoGramas), lineas), {})
 
 
-def guardarResultado(resultado, umbralFrecuencia, archivo):
+def guardarResultado(resultado, tamañoGramas, umbralFrecuencia, archivo):
     with open(archivo, 'w') as salida:
         descendente = sorted(resultado.items(), key=itemgetter(1), reverse=True)
+
+        resultado = filter(lambda x: x[1] >= umbralFrecuencia, descendente)
+        total = reduce(lambda x, y: y[0], enumerate(resultado))
+        salida.write(f'Se encontraron {total + 1} gramas de tamaño {tamañoGramas}\n')
+
         impresion = (f'[{valor}]\t{clave}\n' for clave, valor in descendente if valor >= umbralFrecuencia)
         salida.writelines(impresion)
 
@@ -54,7 +59,7 @@ def guardarResultado(resultado, umbralFrecuencia, archivo):
 def busquedaGramas(archivoEntrada, tamañoGramas, umbralFrecuencia, archivoSalida):
     archivo = leer(archivoEntrada)
     resultado = contarFrecuenciaGramas(archivo, tamañoGramas)
-    guardarResultado(resultado, umbralFrecuencia, archivoSalida)
+    guardarResultado(resultado, tamañoGramas, umbralFrecuencia, archivoSalida)
 
 
 def main(argumentos):
